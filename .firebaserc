@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "frice-app": {
+      "hosting": {
+        "app": [
+          "frice-app"
+        ]
+      }
+    }
+  }
+}

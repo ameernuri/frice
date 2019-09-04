@@ -1,0 +1,76 @@
+.header {
+  font-family: Segoe UI;
+  //background-color: opacity(var(--ion-color-primary), .5);
+  color: var(--ion-color-primary);
+
+  .clock {
+    font-size: 3.5rem;
+
+    .hour {
+      font-weight: 600;
+    }
+
+    .minute {
+      font-weight: 100;
+    }
+
+    .colon {
+      &.blink-off {
+        opacity: .5;
+      }
+    }
+  }
+
+  .timer {
+    padding-left: 13px;
+    width: 100%;
+    font-size: 1.2rem;
+    letter-spacing: 15px;
+  }
+}
+
+ion-progress-bar {
+  height: 25px;
+}
+
+.tasks {
+	cursor: pointer;
+
+  .bullet {
+    font-size: 1.5rem;
+    color: var(--ion-color-primary);
+
+    &.input-bullet {
+      opacity: .5;
+    }
+  }
+}
+
+.task {
+	&.selected {
+		background: #eef;
+	}
+
+	&.checked {
+		color: #888;
+		text-decoration: line-through;
+
+		.stars {
+			color: #999;
+		}
+	}
+
+	.stars {
+		margin-top: .6rem;
+		color: var(--ion-color-primary);
+
+		ion-icon {
+			opacity: .5;
+			transition: .5s;
+
+			&:hover {
+				opacity: 1;
+			}
+		}
+	}
+}

@@ -1,0 +1,117 @@
+<ion-content *ngIf="time | async; let t">
+
+  <div
+    class="header"
+    text-center
+    padding>
+    <div class="clock">
+    <span class="hour">{{t.hour | number:'2.0'}}</span>
+    <span class="colon"
+      [ngClass]="{'blink-off': t.second % 2 == 0}">:</span>
+    <span class="minute">{{t.minute | number:'2.0'}}</span>
+    </div>
+    <ion-label
+      class="timer">
+      {{t.minute < 30
+        ? 30-t.minute - (t.second === 0 ? 0 : 1)
+        : 30-(t.minute-30) - (t.second === 0 ? 0 : 1)
+      }}:{{60-t.second === 60 ? '00' : 60-t.second | number:'2.0'}}
+    </ion-label>
+  </div>
+
+  <ion-progress-bar
+    [reversed]="t.minute >= 30"
+    [value]="t.minute < 30
+      ? (t.minute/30 + (t.second/1800))
+      : 1-((t.minute-30)/30 + (t.second/1800))
+    "
+    color="primary">
+  </ion-progress-bar>
+
+  <ion-grid class="tasks">
+    <ion-row>
+      <ion-col
+        class="ion-align-self-center bullet input-bullet"
+        size="auto">
+        <ion-icon mode="ios" name="radio-button-off"></ion-icon>
+      </ion-col>
+
+			<ion-col
+				no-padding
+				size="auto"
+				class="ion-align-items-center stars">
+					<span
+						*ngIf="inputStars < 5">
+						<ion-icon name="star-outline"
+							(click)="inputStar(1)"></ion-icon>
+					</span>
+					<span
+						*ngIf="inputStars > 0">
+						<ion-icon name="star"
+							*ngFor="let s of Array(inputStars).fill(0)"
+							(click)="inputStar(-1)"></ion-icon>
+					</span>
+			</ion-col>
+
+      <ion-col>
+        <ion-input
+          autofocus="true"
+					(keydown)="processInput()"
+          (keyup.enter)="addTask()"
+          type="text"
+					no-padding
+					class="ion-align-self-center"
+          [(ngModel)]="inputTask"
+          placeholder="Enter a task">
+        </ion-input>
+      </ion-col>
+    </ion-row>
+
+    <ion-row
+			class="task"
+			[ngClass]="{'selected': selectedTask == task.id, 'checked': task.checked}"
+      *ngFor="let task of tasks | async">
+
+      <ion-col
+        class="ion-align-items-center bullet"
+        size="auto">
+        <ion-icon
+					class="ion-align-self-center"
+					mode="ios"
+					name="radio-button-off"
+					*ngIf="!task.checked"
+					(click)="check(task.id)"></ion-icon>
+        <ion-icon
+					class="ion-align-self-center"
+					mode="ios"
+					name="checkmark-circle-outline"
+					*ngIf="task.checked"
+					(click)="check(task.id, false)"></ion-icon>
+      </ion-col>
+
+			<ion-col
+				no-padding
+				size="auto"
+				class="ion-align-items-center stars">
+					<span
+						*ngIf="task.stars < 5">
+						<ion-icon name="star-outline"
+							(click)="star(task.id, task.stars, 1)"></ion-icon>
+					</span>
+					<span
+						*ngIf="task.stars > 0">
+						<ion-icon name="star"
+							*ngFor="let s of Array(task.stars).fill(0)"
+							(click)="star(task.id, task.stars, -1)"></ion-icon>
+					</span>
+			</ion-col>
+
+      <ion-col
+				class="ion-align-self-center"
+				(click)="select(task.id)">
+        <ion-label>{{task.title}}</ion-label>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>
